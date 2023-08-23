@@ -7,7 +7,7 @@ internal class Options
      [Option('c', Default = "1710", HelpText ="AIRAC Cycle Identifier")]
     public string AiracCycle {get;set;}
     
-    [Value(0, HelpText ="fpl file to be converted.  Default = stdin")]    
+    [Value(0, HelpText ="fpl file to be converted.  Defaults to stdin")]    
     public string InputFile { get; set;}
 
     [Option('o', HelpText ="Output file location")]

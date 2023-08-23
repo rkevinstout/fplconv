@@ -6,9 +6,8 @@ internal static class Formatter
 {
     // https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/
 
-    internal static string Format(this FlightPlan flightPlan, Options options = null)
+    internal static string Format(this FlightPlan flightPlan, Options options)
     {
-        options ??= new Options();
         var buffer = new StringBuilder();
 
         buffer.AppendLine("I");

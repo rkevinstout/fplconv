@@ -37,14 +37,16 @@ class FileConverter
 
     static TextWriter CreateTextWriter(FlightPlan flightPlan, Options options)
     {
-        if (string.IsNullOrEmpty(options.OutputFile))
+        if (string.IsNullOrEmpty(options.OutputLocation))
         {
             return Console.Out;
         }
+
+        var fileName = options.OutputFile ?? flightPlan.Name;
         
         var path = Path.Combine(
-            options.OutputLocation,
-            $"{flightPlan.Name}.fms"
+            options.OutputLocation,  
+            $"{fileName}.fms"
         );
         
         return new StreamWriter(path);
