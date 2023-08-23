@@ -7,10 +7,20 @@ Parser.Default.ParseArguments<Options>(args)
 
 static void RunOptions(Options options)
 {
-  //handle options
+    FileConverter.Convert(options);
 }
 
 static void HandleParseError(IEnumerable<Error> errors)
 {
-  //handle errors
+    if (errors.IsVersion())
+    {
+        Console.WriteLine("Version Request");
+        return;
+    }
+
+    if (errors.IsHelp())
+    {
+        Console.WriteLine("Help Request");
+        return;
+    }
 }

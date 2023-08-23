@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace fplconv.XPlane;
 
-namespace fplconv.XPlane;
-
-class FlightPlan
+public class FlightPlan
 {    
     public string Name { get; set; }
 
@@ -14,10 +12,7 @@ class FlightPlan
 
     public class Waypoint
     {
-        public Waypoint()
-        {
-            Via = LegType.Direct;
-        }
+        public Waypoint() => Via = LegType.Direct;
 
         public enum WaypointType
         {

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace fplconv.XPlane;
 
@@ -13,8 +12,8 @@ internal static class Formatter
         var buffer = new StringBuilder();
 
         buffer.AppendLine("I");
-        buffer.AppendLine(options.Version);
-        buffer.AppendLine($"CYCLE {options.Cycle}");
+        buffer.AppendLine("1100 Version");
+        buffer.AppendLine($"CYCLE {options.AiracCycle}");
 
         if (flightPlan.Departure.IsAirport)
             buffer.Append('A');
@@ -30,13 +29,14 @@ internal static class Formatter
 
         foreach (var waypoint in flightPlan.Route)
         {
-            var s = $"{(int)waypoint.Type} {waypoint.Identifier} {waypoint.Via.FormatLegType()} {waypoint.Altitude} {waypoint.Latitude} {waypoint.Longitude}";
-
-            buffer.AppendLine(s);
+            buffer.AppendLine(FormatWaypoint(waypoint));
         }
 
         return buffer.ToString();
     }
+
+    static string FormatWaypoint(FlightPlan.Waypoint waypoint) => 
+        $"{(int)waypoint.Type} {waypoint.Identifier} {waypoint.Via.FormatLegType()} {waypoint.Altitude} {waypoint.Latitude} {waypoint.Longitude}";
 
     static string FormatLegType(this FlightPlan.Waypoint.LegType input) => input switch
     {
