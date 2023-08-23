@@ -15,29 +15,30 @@ class FileConverter
         _inputStreamFactory = inputStreamFactory;
         _textWriterFactory = textWriterFactory;        
     }
-    public void Convert(Options options)
+    
+    public async Task Convert(Options options)
     {
         var input = ReadInput(options);
 
         var output = input.Map();
 
-        WriteOutput(output, options);
+        await WriteOutput(output, options);
     }
 
-    FlightPlan_t ReadInput(Options options)
+    private FlightPlan_t ReadInput(Options options)
     {   
         using var stream = _inputStreamFactory.Invoke(options);
 
         return Serializer.Deserialize(stream);
     }
 
-    void WriteOutput(FlightPlan flightPlan, Options options)
+    private async Task WriteOutput(FlightPlan flightPlan, Options options)
     {
         using var textWriter = _textWriterFactory.Invoke(flightPlan, options);
 
         var text = flightPlan.Format(options);
 
-        textWriter.Write(text);
-        textWriter.Flush();
+        await textWriter.WriteAsync(text);
+        await textWriter.FlushAsync();
     }
 }

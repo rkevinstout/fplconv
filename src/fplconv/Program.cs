@@ -1,11 +1,12 @@
 ﻿using CommandLine;
 using fplconv;
 
-Parser.Default.ParseArguments<Options>(args)
-    .WithParsed(RunOptions)
-    .WithNotParsed(HandleParseError);
+var result = Parser.Default.ParseArguments<Options>(args);
 
-static void RunOptions(Options options)
+await result.WithParsedAsync(Run);
+await result.WithNotParsedAsync(HandleParseError);
+
+static async Task<int> Run(Options options)
 {
     var converter = new FileConverter(
         InputStreamFactory.Create,
@@ -13,25 +14,27 @@ static void RunOptions(Options options)
         );
     try 
     {
-        converter.Convert(options);
+        await converter.Convert(options);  
     }
     catch (Exception ex)    
     {
         Console.WriteLine($"Error: {ex.Message}");
-    }
-}
+        return 1;
+    }  
+    return 0;   
+} 
 
-static void HandleParseError(IEnumerable<Error> errors)
+static Task<int> HandleParseError(IEnumerable<Error> errors)
 {
     if (errors.IsVersion())
     {
         Console.WriteLine("Version Request");
-        return;
     }
 
     if (errors.IsHelp())
     {
         Console.WriteLine("Help Request");
-        return;
     }
+
+    return Task.FromResult(0);
 }
