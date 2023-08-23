@@ -7,7 +7,18 @@ Parser.Default.ParseArguments<Options>(args)
 
 static void RunOptions(Options options)
 {
-    FileConverter.Convert(options);
+    var converter = new FileConverter(
+        InputStreamFactory.Create,
+        TextWriterFactory.Create
+        );
+    try 
+    {
+        converter.Convert(options);
+    }
+    catch (Exception ex)    
+    {
+        Console.WriteLine($"Error: {ex.Message}");
+    }
 }
 
 static void HandleParseError(IEnumerable<Error> errors)

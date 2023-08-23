@@ -1,11 +1,21 @@
-﻿using System.Xml.Serialization;
-using fplconv.XPlane;
+﻿using fplconv.XPlane;
 
 namespace fplconv;
 
 class FileConverter
 {
-    public static void Convert(Options options)
+    private Func<Options, Stream> _inputStreamFactory;
+    private Func<FlightPlan, Options, TextWriter> _textWriterFactory;
+
+    public FileConverter(
+        Func<Options, Stream> inputStreamFactory,
+        Func<FlightPlan, Options, TextWriter> textWriterFactory
+        )
+    {
+        _inputStreamFactory = inputStreamFactory;
+        _textWriterFactory = textWriterFactory;        
+    }
+    public void Convert(Options options)
     {
         var input = ReadInput(options);
 
@@ -13,57 +23,21 @@ class FileConverter
 
         WriteOutput(output, options);
     }
-    
-    static FlightPlan_t ReadInput(Options options)
+
+    FlightPlan_t ReadInput(Options options)
     {   
-        var serializer = new XmlSerializer(typeof(FlightPlan_t));
+        using var stream = _inputStreamFactory.Invoke(options);
 
-        using var stream = CreateInputStream(options);
-
-        var obj = serializer.Deserialize(stream);
-
-        return (FlightPlan_t)obj;
+        return Serializer.Deserialize(stream);
     }
 
-    static void WriteOutput(FlightPlan flightPlan, Options options)
+    void WriteOutput(FlightPlan flightPlan, Options options)
     {
-        using var textWriter = CreateTextWriter(flightPlan, options);
+        using var textWriter = _textWriterFactory.Invoke(flightPlan, options);
 
         var text = flightPlan.Format(options);
 
         textWriter.Write(text);
         textWriter.Flush();
-    }
-
-    static TextWriter CreateTextWriter(FlightPlan flightPlan, Options options)
-    {
-        if (string.IsNullOrEmpty(options.OutputLocation))
-        {
-            return Console.Out;
-        }
-
-        var fileName = options.OutputFile ?? flightPlan.Name;
-        
-        var path = Path.Combine(
-            options.OutputLocation,  
-            $"{fileName}.fms"
-        );
-        
-        return new StreamWriter(path);
-    }
-
-    static Stream CreateInputStream(Options options)
-    {
-        if (!string.IsNullOrEmpty(options.InputFile))
-        {
-            return new FileStream(options.InputFile, FileMode.Open);
-        }
-
-        if (!Console.IsInputRedirected)
-        {
-            throw new Exception("stdin has not been redirected");
-        }
-
-        return Console.OpenStandardInput();
     }
 }
