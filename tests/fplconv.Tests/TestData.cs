@@ -10,7 +10,7 @@ public static class TestData
       var ms = new MemoryStream(bytes);
 
       return ms;
-}
+  }
 
     public static string KAUS_KIAH_Garmin => $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <flight-plan xmlns=""http://www8.garmin.com/xmlschemas/FlightPlan/v1"">
