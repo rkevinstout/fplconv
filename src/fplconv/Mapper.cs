@@ -7,11 +7,10 @@ using WaypointType = XPlane.FlightPlan.Waypoint.WaypointType;
 internal static class Mapper
 {
     /// <summary>
-    /// Maps a flight plan from Garmin's format to a representation
-    /// of the format used by XPlane
+    /// Maps a flight plan from Garmin's format to XPlane
     /// </summary>
     /// <param name="input">a serialized Garmin flight plan</param>
-    /// <returns>a FlightPlan</returns>
+    /// <returns>an XPlane.FlightPlan</returns>
     /// <seealso cref="https://www8.garmin.com/xmlschemas/FlightPlanv1.xsd"/>
     /// <seealso cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
     public static FlightPlan Map(this FlightPlan_t input)
@@ -51,8 +50,8 @@ internal static class Mapper
         {
             var key = routePoint.ToWaypointTableKey();
 
-            // lookup the routepoint in the waypoint table as
-            // it contains the lat/lon coordinates
+            // we need the copy from the waypomt table
+            // to get the lat/lon coordinates
             yield return dictionary[key].ToWaypoint();
         }
     }
@@ -110,8 +109,7 @@ internal static class Mapper
                 dictionary.Add(key, waypoint);
             }
         }
-        return dictionary;
-    }
+        return dictionary;    }
     
     /// <summary>
     /// Constructs a key from data in a <paramref name="wayPoint"/>
@@ -124,8 +122,7 @@ internal static class Mapper
             wayPoint.identifier,
             wayPoint.type,
             wayPoint.countrycode            
-            );
-    }
+            );    }
 
     /// <summary>
     /// Constructs a key from data in a <paramref name="routePoint"/>
