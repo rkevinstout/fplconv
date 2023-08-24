@@ -1,20 +1,25 @@
 ﻿using CommandLine;
 using fplconv;
 
+
+var exitCode = 0;
+
 var result = Parser.Default.ParseArguments<Options>(args);
 
-await result.WithParsedAsync(Run);
-await result.WithNotParsedAsync(HandleParseError);
+exitCode += result.MapResult(Run, _ => 1);
 
-static async Task<int> Run(Options options)
-{
-    var converter = new FileConverter(
-        InputStreamFactory.Create,
-        TextWriterFactory.Create
-        );
+return exitCode;
+
+static int Run(Options options)
+{    
     try 
     {
-        await converter.Convert(options);  
+        var converter = new FileConverter(
+            InputStreamFactory.Create,
+            TextWriterFactory.Create
+            );
+
+        converter.Convert(options);  
     }
     catch (Exception ex)    
     {
@@ -23,18 +28,3 @@ static async Task<int> Run(Options options)
     }  
     return 0;   
 } 
-
-static Task<int> HandleParseError(IEnumerable<Error> errors)
-{
-    if (errors.IsVersion())
-    {
-        Console.WriteLine("Version Request");
-    }
-
-    if (errors.IsHelp())
-    {
-        Console.WriteLine("Help Request");
-    }
-
-    return Task.FromResult(0);
-}
