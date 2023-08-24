@@ -5,14 +5,13 @@ namespace fplconv.Tests;
 public static class TestData
 {
   public static Stream CreateStream(string input)
-    {
-        byte[] bytes = Encoding.UTF8.GetBytes(input);
-        var ms = new MemoryStream(bytes);
+  {
+      byte[] bytes = Encoding.UTF8.GetBytes(input);
+      var ms = new MemoryStream(bytes);
 
-        return ms;
-  }
-  
-  
+      return ms;
+}
+
     public static string KAUS_KIAH_Garmin => $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <flight-plan xmlns=""http://www8.garmin.com/xmlschemas/FlightPlan/v1"">
   <created>2023-08-23T10:49:34Z</created>
