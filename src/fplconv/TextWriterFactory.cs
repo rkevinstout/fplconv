@@ -1,4 +1,6 @@
 namespace fplconv;
+
+using System.Text;
 using fplconv.XPlane;
 
 public static class TextWriterFactory
@@ -22,6 +24,6 @@ public static class TextWriterFactory
             $"{fileName}.fms"
         );
         
-        return new StreamWriter(path);
+        return new StreamWriter(path, false, Encoding.UTF8);
     }
 }
