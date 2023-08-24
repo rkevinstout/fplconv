@@ -4,21 +4,26 @@ namespace fplconv.Tests;
 
 public class FileConverterTests
 {   
-    [Fact]
-    public void CanConvert_File()
+    private static string ProcessFile(string input, Options options)
     {
-        var options = new Options { AiracCycle = "2112" };
-
         using var textWriter = new StringWriter();
 
         var converter = new FileConverter(
-            (options) => TestData.CreateStream(TestData.KAUS_KIAH_Garmin),
+            (options) => TestData.CreateStream(input),
             (fp, options) => textWriter
         );
 
         converter.Convert(options);
 
-        var output = textWriter.ToString(); 
+        return textWriter.ToString();
+    }
+
+    [Fact]
+    public void CanConvert_File()
+    {
+        var options = new Options { AiracCycle = "2112" };
+
+        var output = ProcessFile(TestData.KAUS_KIAH_Garmin, options);
 
         output.Should().NotBeNullOrEmpty();
 
@@ -33,5 +38,17 @@ public class FileConverterTests
         lines[6].Should().Be("1 KAUS ADEP 0 30.194528 -97.669875");
 
         lines[13].Should().Be("1 KIAH ADES 0 29.984436 -95.341442");
+    }
+
+    [Fact]
+    public void RegressionTest()
+    {
+        var options = new Options { AiracCycle = "2302" };
+
+        var output = ProcessFile(TestData.KDFW_KIAH_Garmin, options);
+
+        var expected = TestData.KDFW_KIAH_XPlane.Replace("\r\n","\n");
+
+        output.Should().BeEquivalentTo(expected);
     }
 }
