@@ -20,7 +20,8 @@ internal static class Mapper
             Name = input.route.routename
         };
 
-        fms.Route = MapRoute(input.waypointtable, input.route.routepoint);
+        fms.Route = MapRoute(input.waypointtable, input.route.routepoint)
+            .ToArray();
 
         fms.Departure = fms.Route.First();
 
