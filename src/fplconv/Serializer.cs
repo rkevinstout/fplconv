@@ -10,6 +10,8 @@ internal static class Serializer
 
         var obj = serializer.Deserialize(stream);
 
-        return obj as FlightPlan_t;
+        var flightPlan =  obj as FlightPlan_t;
+
+        return flightPlan ?? throw new InvalidOperationException("input could not be deserialized");
     }
 }

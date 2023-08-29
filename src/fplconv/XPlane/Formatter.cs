@@ -38,7 +38,7 @@ internal static class Formatter
     static object[] ToArray(this FlightPlan.Waypoint waypoint) => new object[]
         {
             waypoint.Type.ToString("D"),
-            waypoint.Identifier,
+            waypoint.Identifier ?? string.Empty,
             waypoint.Via.FormatLegType(),
             waypoint.Altitude,
             waypoint.Latitude,

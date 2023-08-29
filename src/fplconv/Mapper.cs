@@ -23,16 +23,12 @@ internal static class Mapper
         fms.Route = MapRoute(input.waypointtable, input.route.routepoint)
             .ToArray();
 
-        fms.Departure = fms.Route.First();
-
-        if (fms.Departure.IsAirport)
+        if (fms.Departure?.IsAirport is not null)
         {
             fms.Departure.Via = Waypoint.LegType.DepartureAirport;
         }
 
-        fms.Destination = fms.Route.Last();
-
-        if (fms.Destination.IsAirport)
+        if (fms.Destination?.IsAirport is not null)
         {
             fms.Destination.Via = Waypoint.LegType.DestinationAirport;
         }
