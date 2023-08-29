@@ -2,10 +2,17 @@
 
 namespace fplconv.XPlane;
 
+using static FlightPlan.Waypoint;
+
 internal static class Formatter
 {
-    // https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/
-
+    /// <summary>
+    /// Generates the content of an x-plane .fms file
+    /// </summary>
+    /// <param name="flightPlan"></param>
+    /// <param name="options"></param>
+    /// <returns></returns>
+    /// <see cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
     internal static string Format(this FlightPlan flightPlan, Options options)
     {
         var buffer = new StringBuilder();
@@ -35,22 +42,34 @@ internal static class Formatter
         return buffer.ToString();
     }
 
-    static object[] ToArray(this FlightPlan.Waypoint waypoint) => new object[]
+    private static object[] ToArray(this FlightPlan.Waypoint waypoint) => new object[]
         {
             waypoint.Type.ToString("D"),
-            waypoint.Identifier ?? string.Empty,
-            waypoint.Via.FormatLegType(),
+            waypoint.Identifier,
+            waypoint.FormatLegType(),
             waypoint.Altitude,
             waypoint.Latitude,
             waypoint.Longitude
         };
 
-    static string FormatLegType(this FlightPlan.Waypoint.LegType input) => input switch
+    private static string FormatLegType(this FlightPlan.Waypoint input)
     {
-        FlightPlan.Waypoint.LegType.DepartureAirport => "ADEP",
-        FlightPlan.Waypoint.LegType.DestinationAirport => "ADES",
-        FlightPlan.Waypoint.LegType.Direct => "DRCT",
-        FlightPlan.Waypoint.LegType.Airway => "DRCT",
-        _ => "DRCT",
-    };
+        // Per XPlane docs ->
+        // The third column is the via/special column. 
+        // It can have the following values: ADEP/ADES for departure or d
+        // destination airport of the flightplan, DRCT for a direct or 
+        // random route leg to the waypoint, or the name of an airway or 
+        // ATS route to the waypoint.
+        
+        if (input.Via == LegType.Airway && input.Airway is not null)        
+            return input.Airway;
+
+        return input.Via switch
+        {
+            LegType.DepartureAirport => "ADEP",
+            LegType.DestinationAirport => "ADES",
+            LegType.Direct => "DRCT",
+            _ => "DRCT",
+        };
+    }
 }
