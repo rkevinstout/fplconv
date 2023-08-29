@@ -12,9 +12,9 @@ public class MapperTests
         var flightPlan = Mapper.Map(garmin);
 
         flightPlan.Route.Length.Should().Be(4);
-        flightPlan.Departure.Identifier.Should().Be("KCUB");
+        flightPlan.Departure.Waypoint.Identifier.Should().Be("KCUB");
         flightPlan.Departure.IsAirport.Should().BeTrue();   
-        flightPlan.Destination.Identifier.Should().Be("KRDU");
+        flightPlan.Destination.Waypoint.Identifier.Should().Be("KRDU");
         flightPlan.Destination.IsAirport.Should().BeTrue();
     }
 
