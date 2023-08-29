@@ -29,7 +29,9 @@ class FileConverter
     {
         using var stream = GetStream(options);
 
-        return Serializer.Deserialize(stream);
+        var flightPlan  = Serializer.Deserialize(stream);
+
+        return flightPlan ?? throw new InvalidOperationException("input could not be deserialized");
     }
 
     private void WriteOutput(FlightPlan flightPlan, Options options)

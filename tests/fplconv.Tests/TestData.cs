@@ -2,15 +2,96 @@
 
 namespace fplconv.Tests;
 
+/* The presence of XML causes VSCode's formatter
+   to take leave of its senses.  
+
+   I don't like it either
+*/
+
 public static class TestData
 {
-  public static Stream CreateStream(string input)
-  {
-      byte[] bytes = Encoding.UTF8.GetBytes(input);
-      var ms = new MemoryStream(bytes);
+    public static Stream CreateStream(string input)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(input);
+        var ms = new MemoryStream(bytes);
 
-      return ms;
-  }
+        return ms;
+    }
+
+    public static FlightPlan_t CreateGarminFlightPlan()
+    {
+        var fp = new FlightPlan_t
+        {            
+            route = new Route_t
+            {
+                routename = "KCUB KRDU",
+                routepoint = new RoutePoint_t[]
+                {
+                    new RoutePoint_t
+                    {
+                        waypointidentifier = "KCUB",
+                        waypointtype = WaypointType_t.AIRPORT,
+                        waypointcountrycode = "K4"
+                    },
+                    new RoutePoint_t
+                    {
+                        waypointidentifier = "CTF",
+                        waypointtype = WaypointType_t.VOR,
+                        waypointcountrycode = "K4"
+                    },
+                    new RoutePoint_t
+                    {
+                        waypointidentifier = "RDU",
+                        waypointtype = WaypointType_t.VOR,
+                        waypointcountrycode = "K4"
+                    },
+                    new RoutePoint_t
+                    {
+                        waypointidentifier = "KRDU",
+                        waypointtype = WaypointType_t.AIRPORT,
+                        waypointcountrycode = "K4"
+                    }
+                }
+            },
+            waypointtable = new Waypoint_t[]
+            {
+                new Waypoint_t
+                {
+                    identifier = "KCUB",
+                    type = WaypointType_t.AIRPORT,
+                    countrycode = "K4",
+                    lat = 33.970470M,
+                    lon = -80.995247M
+                },
+                new Waypoint_t
+                {
+                    identifier = "CTF",
+                    type = WaypointType_t.VOR,
+                    countrycode = "K4",
+                    lat = 34.650497M,
+                    lon = -80.274918M
+                },
+                new Waypoint_t
+                {
+                    identifier = "RDU",
+                    type = WaypointType_t.VOR,
+                    countrycode = "K4",
+                    lat = 35.872520M,
+                    lon = -78.783340M
+                },
+                new Waypoint_t
+                {
+                    identifier = "KRDU",
+                    type = WaypointType_t.AIRPORT,
+                    countrycode = "K4",
+                    lat = 35.877640M,
+                    lon = -78.787476M
+                }
+            }
+        };
+
+        return fp;
+    }
 
     public static string KAUS_KIAH_Garmin => $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <flight-plan xmlns=""http://www8.garmin.com/xmlschemas/FlightPlan/v1"">
@@ -128,7 +209,7 @@ public static class TestData
 </flight-plan>
 ";
 
-  public static string KDFW_KIAH_XPlane => $@"I
+    public static string KDFW_KIAH_XPlane => $@"I
 1100 Version
 CYCLE 2302
 ADEP KDFW
@@ -151,7 +232,7 @@ NUMENR 15
 1 KIAH ADES 0 29.984436 -95.341442
 ";
 
-  public static string KDFW_KIAH_Garmin => $@"<?xml version=""1.0"" encoding=""utf-8""?>
+    public static string KDFW_KIAH_Garmin => $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <flight-plan xmlns=""http://www8.garmin.com/xmlschemas/FlightPlan/v1"">
   <created>2023-08-24T15:25:12Z</created>
   <waypoint-table>
