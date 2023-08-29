@@ -24,18 +24,26 @@ internal static class Formatter
 
         buffer.AppendLine($"DES {flightPlan.Destination.Identifier}");
 
-        buffer.AppendLine($"NUMENR {flightPlan.Route.ToArray().Length}");
+        buffer.AppendLine($"NUMENR {flightPlan.Route.Length}");
 
         foreach (var waypoint in flightPlan.Route)
         {
-            buffer.AppendLine(FormatWaypoint(waypoint));
+           buffer.AppendJoin(' ', waypoint.ToArray());
+           buffer.AppendLine(); 
         }
 
         return buffer.ToString();
     }
 
-    static string FormatWaypoint(FlightPlan.Waypoint waypoint) => 
-        $"{(int)waypoint.Type} {waypoint.Identifier} {waypoint.Via.FormatLegType()} {waypoint.Altitude} {waypoint.Latitude} {waypoint.Longitude}";
+    static object[] ToArray(this FlightPlan.Waypoint waypoint) => new object[]
+        {
+            waypoint.Type.ToString("D"),
+            waypoint.Identifier,
+            waypoint.Via.FormatLegType(),
+            waypoint.Altitude,
+            waypoint.Latitude,
+            waypoint.Longitude
+        };
 
     static string FormatLegType(this FlightPlan.Waypoint.LegType input) => input switch
     {
