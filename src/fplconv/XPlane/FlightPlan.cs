@@ -8,7 +8,7 @@ public class FlightPlan
 
     public Waypoint Destination { get; set; }
 
-    public IEnumerable<Waypoint> Route { get; set; }
+    public Waypoint[] Route { get; set; }
 
     public class Waypoint
     {

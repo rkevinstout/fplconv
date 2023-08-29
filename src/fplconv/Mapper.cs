@@ -110,7 +110,8 @@ internal static class Mapper
                 dictionary.Add(key, waypoint);
             }
         }
-        return dictionary;    }
+        return dictionary; 
+    }
     
     /// <summary>
     /// Constructs a key from data in a <paramref name="wayPoint"/>
