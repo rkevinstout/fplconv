@@ -1,8 +1,8 @@
 ﻿namespace fplconv;
 
 using XPlane;
-using Waypoint = XPlane.FlightPlan.Waypoint;
-using WaypointType = XPlane.FlightPlan.Waypoint.WaypointType;
+using static XPlane.FlightPlan;
+using static XPlane.FlightPlan.Waypoint;
 
 internal static class Mapper
 {
@@ -13,31 +13,28 @@ internal static class Mapper
     /// <returns>an XPlane.FlightPlan</returns>
     /// <seealso cref="https://www8.garmin.com/xmlschemas/FlightPlanv1.xsd"/>
     /// <seealso cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
-    public static FlightPlan Map(this FlightPlan_t input)
+    internal static FlightPlan Map(this FlightPlan_t input)
     {
-        var fms = new FlightPlan
-        {
-            Name = input.route.routename
-        };
-
-        fms.Route = MapRoute(input.waypointtable, input.route.routepoint)
+        var route = MapRoute(input.waypointtable, input.route.routepoint)
             .ToArray();
+
+        var fms = new FlightPlan(input.route.routename, route);
 
         if (fms.Departure?.IsAirport is not null)
         {
-            fms.Departure.Via = Waypoint.LegType.DepartureAirport;
+            fms.Departure.Via = LegType.DepartureAirport;
         }
 
         if (fms.Destination?.IsAirport is not null)
         {
-            fms.Destination.Via = Waypoint.LegType.DestinationAirport;
+            fms.Destination.Via = LegType.DestinationAirport;
         }
 
         return fms;
     }
 
-    public static IEnumerable<Waypoint> MapRoute(
-        Waypoint_t[] waypoints, 
+    private static IEnumerable<Waypoint> MapRoute(
+        Waypoint_t[] waypoints,
         RoutePoint_t[] routePoints
         )
     {
@@ -58,13 +55,13 @@ internal static class Mapper
     /// </summary>
     /// <param name="input"></param>
     /// <returns>the waypoint</returns>
-    private static Waypoint ToWaypoint(this Waypoint_t input) => new()
-    {
-        Identifier = input.identifier,
-        Latitude = input.lat,
-        Longitude = input.lon,
-        Type = input.type.ToWaypointType()
-    };
+    private static Waypoint ToWaypoint(this Waypoint_t input) => new(
+        input.identifier,
+        input.type.ToWaypointType(),
+        input.lat,
+        input.lon
+        );
+
 
     private static WaypointType ToWaypointType(this WaypointType_t input) => input switch
     {
@@ -106,21 +103,19 @@ internal static class Mapper
                 dictionary.Add(key, waypoint);
             }
         }
-        return dictionary; 
+        return dictionary;
     }
-    
+
     /// <summary>
     /// Constructs a key from data in a <paramref name="wayPoint"/>
     /// </summary>
     /// <param name="wayPoint"></param>
     /// <returns></returns>
-    internal static WaypointTableKey ToWaypointTableKey(this Waypoint_t wayPoint)
-    {
-        return new WaypointTableKey(
-            wayPoint.identifier,
-            wayPoint.type,
-            wayPoint.countrycode            
-            );    }
+    internal static WaypointTableKey ToWaypointTableKey(this Waypoint_t wayPoint) => new(
+        wayPoint.identifier,
+        wayPoint.type,
+        wayPoint.countrycode
+        );
 
     /// <summary>
     /// Constructs a key from data in a <paramref name="routePoint"/>
@@ -129,14 +124,11 @@ internal static class Mapper
     /// Waypoint for denoting its position in a route
     /// </param>
     /// <returns></returns>
-    internal static WaypointTableKey ToWaypointTableKey(this RoutePoint_t routePoint)
-    {
-        return new WaypointTableKey(
-            routePoint.waypointidentifier,
-            routePoint.waypointtype,
-            routePoint.waypointcountrycode            
-            );
-    }
+    internal static WaypointTableKey ToWaypointTableKey(this RoutePoint_t routePoint) => new(
+        routePoint.waypointidentifier,
+        routePoint.waypointtype,
+        routePoint.waypointcountrycode
+        );
 
     /// <summary>
     /// Composite key for selecting a Waypoint from the Waypoint table
@@ -149,9 +141,9 @@ internal static class Mapper
     /// <param name="WaypointType">Type of the waypoint (NDB, VOR, Airport, etc)</param>
     /// <param name="CountryCode">2 character ICAO Nationality Code</param>
     internal record WaypointTableKey(
-        string Identifier, 
-        WaypointType_t WaypointType, 
+        string Identifier,
+        WaypointType_t WaypointType,
         string CountryCode
-        )     
+        )
     { }
 }
