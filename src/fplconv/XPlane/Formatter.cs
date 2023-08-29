@@ -24,12 +24,36 @@ internal static class Formatter
         if (flightPlan.Departure.IsAirport)
             buffer.Append('A');
 
-        buffer.AppendLine($"DEP {flightPlan.Departure.Identifier}");
+        buffer.AppendLine($"DEP {flightPlan.Departure.Waypoint.Identifier}");
+
+        if (flightPlan.Departure.Runway is not null)
+            buffer.AppendLine($"DEPRWY {flightPlan.Departure.Runway}");
+
+        if (flightPlan.Departure.Procedure.Name is not null)
+            buffer.AppendLine($"SID {flightPlan.Departure.Procedure}");
+
+        if (flightPlan.Departure.Procedure.Transition is not null)
+            buffer.AppendLine($"SIDTRANS {flightPlan.Departure.Procedure.Transition}");
 
         if (flightPlan.Destination.IsAirport)
             buffer.Append('A');
 
-        buffer.AppendLine($"DES {flightPlan.Destination.Identifier}");
+        buffer.AppendLine($"DES {flightPlan.Destination.Waypoint.Identifier}");
+
+        if (flightPlan.Destination.Runway is not null)
+            buffer.AppendLine($"DESRWY {flightPlan.Destination.Runway}");
+
+        if (flightPlan.Destination.Arrival.Name is not null)
+            buffer.AppendLine($"STAR {flightPlan.Destination.Arrival.Name}");
+
+        if (flightPlan.Destination.Arrival.Transition is not null)
+            buffer.AppendLine($"STARTRANS {flightPlan.Destination.Arrival.Transition}");
+        
+        if (flightPlan.Destination.Approach.Name is not null)
+            buffer.AppendLine($"APP {flightPlan.Destination.Approach.Name}");
+
+        if (flightPlan.Destination.Approach.Transition is not null)
+            buffer.AppendLine($"APPTRANS {flightPlan.Destination.Approach.Transition}");
 
         buffer.AppendLine($"NUMENR {flightPlan.Route.Length}");
 

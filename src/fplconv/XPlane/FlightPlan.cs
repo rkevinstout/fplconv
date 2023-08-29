@@ -10,15 +10,61 @@ public class FlightPlan
     public FlightPlan(string name, Waypoint[] waypoints)
     {
         Name = name;
-        Route = waypoints;
+        Route = waypoints;        
     }
+    
     public string? Name { get; }
 
-    public Waypoint Departure => Route.First();
-
-    public Waypoint Destination => Route.Last();
-
     public Waypoint[] Route { get; }
+
+    public DepartureBlock Departure => new(this);
+
+    public DestinationBlock Destination => new(this);
+
+    public class DepartureBlock : TerminalBlock
+    {
+        public Waypoint Waypoint => _parent.Route.First();
+
+        public bool IsAirport => Waypoint.IsAirport;
+
+        public Procedure Procedure => new();
+
+        public DepartureBlock(FlightPlan parent): base(parent)
+        { }
+    }
+
+    public class DestinationBlock : TerminalBlock
+    {
+        public Waypoint Waypoint => _parent.Route.Last();
+
+        public bool IsAirport => Waypoint.IsAirport;
+
+        public Procedure Arrival { get; set; } = new();    
+
+        public Procedure Approach { get; set; } = new();
+
+        public DestinationBlock(FlightPlan parent) : base(parent)
+        { }
+    }
+
+    public abstract class TerminalBlock
+    {
+        protected readonly FlightPlan _parent;      
+        
+        public string? Runway { get; set; }
+
+        protected TerminalBlock(FlightPlan parent)
+        {
+            _parent = parent;
+        }
+    }
+
+    public class Procedure
+    {
+        public string? Name { get; set;}
+
+        public string? Transition { get; set; }
+    }
 
     public class Waypoint
     {

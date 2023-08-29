@@ -20,14 +20,14 @@ internal static class Mapper
 
         var fms = new FlightPlan(input.route.routename, route);
 
-        if (fms.Departure?.IsAirport is not null)
+        if (fms.Departure.IsAirport)
         {
-            fms.Departure.Via = LegType.DepartureAirport;
+            fms.Departure.Waypoint.Via = LegType.DepartureAirport;
         }
 
-        if (fms.Destination?.IsAirport is not null)
+        if (fms.Destination.IsAirport)
         {
-            fms.Destination.Via = LegType.DestinationAirport;
+            fms.Destination.Waypoint.Via = LegType.DestinationAirport;
         }
 
         return fms;
