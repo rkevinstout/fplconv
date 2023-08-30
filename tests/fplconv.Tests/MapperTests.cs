@@ -1,6 +1,7 @@
 using FluentAssertions;
 
 namespace fplconv.Tests;
+using static XPlane.FlightPlan.Waypoint;
 
 public class MapperTests
 {
@@ -12,10 +13,14 @@ public class MapperTests
         var flightPlan = Mapper.Map(garmin);
 
         flightPlan.Route.Length.Should().Be(4);
-        flightPlan.Departure.Waypoint.Identifier.Should().Be("KCUB");
-        flightPlan.Departure.IsAirport.Should().BeTrue();   
-        flightPlan.Destination.Waypoint.Identifier.Should().Be("KRDU");
+
+        flightPlan.Departure.Identifier.Should().Be("KCUB");
+        flightPlan.Departure.IsAirport.Should().BeTrue();
+        flightPlan.Route.First().Via.Should().Be(LegType.DepartureAirport);
+
+        flightPlan.Destination.Identifier.Should().Be("KRDU");
         flightPlan.Destination.IsAirport.Should().BeTrue();
+        flightPlan.Route.Last().Via.Should().Be(LegType.DestinationAirport);
     }
 
     [Fact]

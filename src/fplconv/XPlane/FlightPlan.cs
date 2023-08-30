@@ -41,8 +41,10 @@ internal sealed class FlightPlan
 
     internal abstract class TerminalBlock
     {
-        public Waypoint Waypoint { get; }        
-        
+        private Waypoint Waypoint { get; }
+
+        public string Identifier => Waypoint.Identifier;
+
         public bool IsAirport => Waypoint.Type == Waypoint.WaypointType.Airport;
         
         public string? Runway { get; set; }
