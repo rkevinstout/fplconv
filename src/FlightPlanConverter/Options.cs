@@ -1,4 +1,4 @@
-namespace fplconv;
+namespace FlightPlanConverter;
 using CommandLine;
 
 internal class Options

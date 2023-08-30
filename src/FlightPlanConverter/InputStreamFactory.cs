@@ -1,4 +1,4 @@
-namespace fplconv;
+namespace FlightPlanConverter;
 internal static class InputStreamFactory
 {
     internal static Stream Create(Options options)

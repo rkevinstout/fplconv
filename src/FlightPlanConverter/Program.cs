@@ -1,5 +1,5 @@
 using CommandLine;
-using fplconv;
+using FlightPlanConverter;
 
 
 var exitCode = 0;

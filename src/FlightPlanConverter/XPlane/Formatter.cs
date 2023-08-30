@@ -1,4 +1,4 @@
-namespace fplconv.XPlane;
+namespace FlightPlanConverter.XPlane;
 using System.Text;
 
 using static FlightPlan.Waypoint;

@@ -1,5 +1,5 @@
-namespace fplconv;
-using fplconv.XPlane;
+namespace FlightPlanConverter;
+using FlightPlanConverter.XPlane;
 
 internal sealed class FileConverter
 {
