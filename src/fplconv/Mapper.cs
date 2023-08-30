@@ -20,16 +20,6 @@ internal static class Mapper
 
         var fms = new FlightPlan(input.route.routename, route);
 
-        if (fms.Departure.IsAirport)
-        {
-            fms.Departure.Waypoint.Via = LegType.DepartureAirport;
-        }
-
-        if (fms.Destination.IsAirport)
-        {
-            fms.Destination.Waypoint.Via = LegType.DestinationAirport;
-        }
-
         return fms;
     }
 
@@ -40,13 +30,26 @@ internal static class Mapper
     {
         var dictionary = waypoints.ToDictionary();
 
-        foreach (var routePoint in routePoints)
+        for (int i = 0; i < routePoints.Length; i++)
         {
+            var routePoint = routePoints[i];
+
             var key = routePoint.ToWaypointTableKey();
 
             // we need the copy from the waypomt table
             // to get the lat/lon coordinates
-            yield return dictionary[key].ToWaypoint();
+            var waypoint = dictionary[key].ToWaypoint();
+
+            if (waypoint.Type == WaypointType.Airport)
+            {
+                if (i == 0) 
+                    waypoint.Via = LegType.DepartureAirport;
+
+                if (i == routePoints.Length - 1)                
+                    waypoint.Via = LegType.DestinationAirport;                
+            }
+
+            yield return waypoint;
         }
     }
 

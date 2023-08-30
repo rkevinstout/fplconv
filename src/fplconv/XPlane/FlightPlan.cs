@@ -5,70 +5,61 @@
 /// in the x-plane documentation
 /// </summary>
 /// <see cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/> 
-public class FlightPlan
+internal sealed class FlightPlan
 {   
-    public FlightPlan(string name, Waypoint[] waypoints)
+    internal FlightPlan(string name, Waypoint[] waypoints)
     {
         Name = name;
         Route = waypoints;        
     }
     
-    public string? Name { get; }
+    public string Name { get; }
 
     public Waypoint[] Route { get; }
 
-    public DepartureBlock Departure => new(this);
+    public DepartureBlock Departure => new(Route.First());
 
-    public DestinationBlock Destination => new(this);
+    public DestinationBlock Destination => new(Route.Last());
 
-    public class DepartureBlock : TerminalBlock
+    internal sealed class DepartureBlock : TerminalBlock
     {
-        public Waypoint Waypoint => _parent.Route.First();
-
-        public bool IsAirport => Waypoint.IsAirport;
-
         public Procedure Procedure => new();
 
-        public DepartureBlock(FlightPlan parent): base(parent)
+        internal DepartureBlock(Waypoint waypoint) : base(waypoint)
         { }
     }
 
-    public class DestinationBlock : TerminalBlock
+    internal sealed class DestinationBlock : TerminalBlock
     {
-        public Waypoint Waypoint => _parent.Route.Last();
-
-        public bool IsAirport => Waypoint.IsAirport;
-
         public Procedure Arrival { get; set; } = new();    
 
         public Procedure Approach { get; set; } = new();
 
-        public DestinationBlock(FlightPlan parent) : base(parent)
+        internal DestinationBlock(Waypoint waypoint) : base(waypoint)
         { }
     }
 
-    public abstract class TerminalBlock
+    internal abstract class TerminalBlock
     {
-        protected readonly FlightPlan _parent;      
+        public Waypoint Waypoint { get; }        
+        
+        public bool IsAirport => Waypoint.Type == Waypoint.WaypointType.Airport;
         
         public string? Runway { get; set; }
 
-        protected TerminalBlock(FlightPlan parent)
-        {
-            _parent = parent;
-        }
+        protected TerminalBlock(Waypoint waypoint) => Waypoint = waypoint;
     }
 
-    public class Procedure
+    internal sealed class Procedure
     {
         public string? Name { get; set;}
 
         public string? Transition { get; set; }
     }
 
-    public class Waypoint
+    internal sealed class Waypoint
     {
-        public Waypoint(
+        internal Waypoint(
             string identifier, 
             WaypointType type,
             decimal latitude,
@@ -81,7 +72,7 @@ public class FlightPlan
             Longitude = longitude;            
         }
 
-        public enum WaypointType
+        internal enum WaypointType
         {
             Airport = 1,
             NDB = 2,
@@ -90,7 +81,7 @@ public class FlightPlan
             UserFix = 28
         }
 
-        public enum LegType
+        internal enum LegType
         {
             DepartureAirport,
             DestinationAirport,
@@ -111,7 +102,5 @@ public class FlightPlan
         public decimal Latitude { get; set; }
 
         public decimal Longitude { get; set; }
-
-        public bool IsAirport => Type == WaypointType.Airport;
     }
 }
