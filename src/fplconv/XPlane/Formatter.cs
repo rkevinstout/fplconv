@@ -24,7 +24,7 @@ internal static class Formatter
         if (flightPlan.Departure.IsAirport)
             _ = buffer.Append('A');
 
-        _ = buffer.AppendLine($"DEP {flightPlan.Departure.Waypoint.Identifier}");
+        _ = buffer.AppendLine($"DEP {flightPlan.Departure.Identifier}");
 
         if (flightPlan.Departure.Runway is not null)
             _ = buffer.AppendLine($"DEPRWY {flightPlan.Departure.Runway}");
@@ -38,7 +38,7 @@ internal static class Formatter
         if (flightPlan.Destination.IsAirport)
             _ = buffer.Append('A');
 
-        _ = buffer.AppendLine($"DES {flightPlan.Destination.Waypoint.Identifier}");
+        _ = buffer.AppendLine($"DES {flightPlan.Destination.Identifier}");
 
         if (flightPlan.Destination.Runway is not null)
             _ = buffer.AppendLine($"DESRWY {flightPlan.Destination.Runway}");
