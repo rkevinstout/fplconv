@@ -1,6 +1,5 @@
-﻿using System.Text;
-
 namespace fplconv.XPlane;
+using System.Text;
 
 using static FlightPlan.Waypoint;
 
@@ -15,11 +14,12 @@ internal static class Formatter
     /// <see cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
     internal static string Format(this FlightPlan flightPlan, Options options)
     {
+#pragma warning disable CA1305
         var buffer = new StringBuilder();
 
-        _ = buffer.AppendLine("I");
-        _ = buffer.AppendLine("1100 Version");
-        _ = buffer.AppendLine($"CYCLE {options.AiracCycle}");
+        _ = buffer.AppendLine("I")
+            .AppendLine("1100 Version")
+            .AppendLine($"CYCLE {options.AiracCycle}");
 
         if (flightPlan.Departure.IsAirport)
             _ = buffer.Append('A');
@@ -48,7 +48,7 @@ internal static class Formatter
 
         if (flightPlan.Destination.Arrival.Transition is not null)
             _ = buffer.AppendLine($"STARTRANS {flightPlan.Destination.Arrival.Transition}");
-        
+
         if (flightPlan.Destination.Approach.Name is not null)
             _ = buffer.AppendLine($"APP {flightPlan.Destination.Approach.Name}");
 
@@ -59,11 +59,12 @@ internal static class Formatter
 
         foreach (var waypoint in flightPlan.Route)
         {
-           _ = buffer.AppendJoin(' ', waypoint.ToArray());
-           _ = buffer.AppendLine(); 
+            _ = buffer.AppendJoin(' ', waypoint.ToArray());
+            _ = buffer.AppendLine();
         }
 
         return buffer.ToString();
+#pragma warning restore CA1305
     }
 
     private static object[] ToArray(this FlightPlan.Waypoint waypoint) => new object[]
@@ -79,20 +80,23 @@ internal static class Formatter
     private static string FormatLegType(this FlightPlan.Waypoint input)
     {
         // Per XPlane docs ->
-        // The third column is the via/special column. 
+        // The third column is the via/special column.
         // It can have the following values: ADEP/ADES for departure or d
-        // destination airport of the flightplan, DRCT for a direct or 
-        // random route leg to the waypoint, or the name of an airway or 
+        // destination airport of the flightplan, DRCT for a direct or
+        // random route leg to the waypoint, or the name of an airway or
         // ATS route to the waypoint.
-        
-        if (input.Via == LegType.Airway && input.Airway is not null)        
+
+        if (input.Via == LegType.Airway && input.Airway is not null)
+        {
             return input.Airway;
+        }
 
         return input.Via switch
         {
             LegType.DepartureAirport => "ADEP",
             LegType.DestinationAirport => "ADES",
             LegType.Direct => "DRCT",
+            LegType.Airway => "DRCT",
             _ => "DRCT",
         };
     }

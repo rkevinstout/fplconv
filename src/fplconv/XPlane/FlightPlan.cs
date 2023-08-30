@@ -1,18 +1,18 @@
-﻿namespace fplconv.XPlane;
+namespace fplconv.XPlane;
 
 /// <summary>
 /// Represents the components of a flight plan as described
 /// in the x-plane documentation
 /// </summary>
-/// <see cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/> 
+/// <see cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
 internal sealed class FlightPlan
-{   
+{
     internal FlightPlan(string name, Waypoint[] waypoints)
     {
         Name = name;
-        Route = waypoints;        
+        Route = waypoints;
     }
-    
+
     public string Name { get; }
 
     public Waypoint[] Route { get; }
@@ -23,7 +23,7 @@ internal sealed class FlightPlan
 
     internal sealed class DepartureBlock : TerminalBlock
     {
-        public Procedure Procedure => new();
+        public Procedure Procedure { get; set; } = new();
 
         internal DepartureBlock(Waypoint waypoint) : base(waypoint)
         { }
@@ -31,7 +31,7 @@ internal sealed class FlightPlan
 
     internal sealed class DestinationBlock : TerminalBlock
     {
-        public Procedure Arrival { get; set; } = new();    
+        public Procedure Arrival { get; set; } = new();
 
         public Procedure Approach { get; set; } = new();
 
@@ -46,7 +46,7 @@ internal sealed class FlightPlan
         public string Identifier => Waypoint.Identifier;
 
         public bool IsAirport => Waypoint.Type == Waypoint.WaypointType.Airport;
-        
+
         public string? Runway { get; set; }
 
         protected TerminalBlock(Waypoint waypoint) => Waypoint = waypoint;
@@ -54,7 +54,7 @@ internal sealed class FlightPlan
 
     internal sealed class Procedure
     {
-        public string? Name { get; set;}
+        public string? Name { get; set; }
 
         public string? Transition { get; set; }
     }
@@ -62,7 +62,7 @@ internal sealed class FlightPlan
     internal sealed class Waypoint
     {
         internal Waypoint(
-            string identifier, 
+            string identifier,
             WaypointType type,
             decimal latitude,
             decimal longitude
@@ -71,7 +71,7 @@ internal sealed class FlightPlan
             Identifier = identifier;
             Type = type;
             Latitude = latitude;
-            Longitude = longitude;            
+            Longitude = longitude;
         }
 
         internal enum WaypointType

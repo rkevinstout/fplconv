@@ -1,9 +1,7 @@
-﻿using FluentAssertions;
-
 namespace fplconv.Tests;
 
 public class FileConverterTests
-{   
+{
     private static string ProcessFile(string input, Options options)
     {
         using var textWriter = new StringWriter();
@@ -47,7 +45,7 @@ public class FileConverterTests
 
         var output = ProcessFile(TestData.KDFW_KIAH_Garmin, options);
 
-        var expected = TestData.KDFW_KIAH_XPlane.Replace("\r\n","\n");
+        var expected = TestData.KDFW_KIAH_XPlane.Replace("\r\n", "\n");
 
         output.Should().BeEquivalentTo(expected);
     }

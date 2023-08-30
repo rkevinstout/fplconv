@@ -3,7 +3,7 @@ namespace fplconv;
 using System.Text;
 using fplconv.XPlane;
 
-public static class TextWriterFactory
+internal static class TextWriterFactory
 {
     internal static TextWriter Create(FlightPlan flightPlan, Options options)
     {
@@ -18,12 +18,12 @@ public static class TextWriterFactory
         }
 
         var fileName = options.OutputFile ?? flightPlan.Name;
-        
+
         var path = Path.Combine(
-            options.OutputLocation,  
+            options.OutputLocation,
             $"{fileName}.fms"
         );
-        
+
         return new StreamWriter(path, false, Encoding.UTF8);
     }
 }

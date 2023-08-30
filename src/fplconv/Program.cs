@@ -1,4 +1,4 @@
-﻿using CommandLine;
+using CommandLine;
 using fplconv;
 
 
@@ -11,20 +11,20 @@ exitCode += result.MapResult(Run, _ => 1);
 return exitCode;
 
 static int Run(Options options)
-{    
-    try 
+{
+    try
     {
         var converter = new FileConverter(
             InputStreamFactory.Create,
             TextWriterFactory.Create
             );
 
-        converter.Convert(options);  
+        converter.Convert(options);
     }
-    catch (Exception ex)    
+    catch (Exception ex)
     {
         Console.WriteLine($"Error: {ex.Message}");
         return 1;
-    }  
-    return 0;   
-} 
+    }
+    return 0;
+}

@@ -1,4 +1,4 @@
-﻿namespace fplconv;
+namespace fplconv;
 
 using XPlane;
 using static XPlane.FlightPlan;
@@ -30,7 +30,7 @@ internal static class Mapper
     {
         var dictionary = waypoints.ToDictionary();
 
-        for (int i = 0; i < routePoints.Length; i++)
+        for (var i = 0; i < routePoints.Length; i++)
         {
             var routePoint = routePoints[i];
 
@@ -42,11 +42,11 @@ internal static class Mapper
 
             if (waypoint.Type == WaypointType.Airport)
             {
-                if (i == 0) 
+                if (i == 0)
                     waypoint.Via = LegType.DepartureAirport;
 
-                if (i == routePoints.Length - 1)                
-                    waypoint.Via = LegType.DestinationAirport;                
+                if (i == routePoints.Length - 1)
+                    waypoint.Via = LegType.DestinationAirport;
             }
 
             yield return waypoint;
