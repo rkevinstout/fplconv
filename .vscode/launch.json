@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/fplconv/bin/Debug/net7.0</fplconv.dll>",
+            "program": "${workspaceFolder}/src/FlightPlanConverter/bin/Debug/net7.0</FlightPlanConverter.dll>",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

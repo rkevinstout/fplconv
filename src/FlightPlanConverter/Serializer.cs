@@ -1,4 +1,4 @@
-namespace fplconv;
+namespace FlightPlanConverter;
 using System.Xml;
 using System.Xml.Serialization;
 

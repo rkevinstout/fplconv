@@ -1,4 +1,4 @@
-namespace fplconv.Tests;
+namespace FlightPlanConverter.Tests;
 
 using static XPlane.FlightPlan.Waypoint;
 

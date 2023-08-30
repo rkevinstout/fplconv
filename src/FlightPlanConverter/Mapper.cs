@@ -1,4 +1,4 @@
-namespace fplconv;
+namespace FlightPlanConverter;
 
 using XPlane;
 using static XPlane.FlightPlan;
@@ -87,7 +87,7 @@ internal static class Mapper
     /// this.  Enforcement of this constraint is a function of schema validation which
     /// can not be presupposed.  This dictionary simulates the function of that constraint
     /// </remarks>
-    /// <param name="waypoints">an unordered list of unique 
+    /// <param name="waypoints">an unordered list of unique
     /// waypoints referenced by a flight plan</param>
     /// <returns>a map of WaypointTableKey->Waypoint</returns>
     /// <seealso cref="https://www8.garmin.com/xmlschemas/FlightPlanv1.xsd"/>
@@ -99,7 +99,7 @@ internal static class Mapper
         {
             var key = waypoint.ToWaypointTableKey();
 
-            // the xsd:key has a unique constraint however compliance is 
+            // the xsd:key has a unique constraint however compliance is
             // voluntary so we ignore duplicates
             if (!dictionary.TryGetValue(key, out _))
             {
@@ -123,7 +123,7 @@ internal static class Mapper
     /// <summary>
     /// Constructs a key from data in a <paramref name="routePoint"/>
     /// </summary>
-    /// <param name="routePoint">An abbreviated representation of a 
+    /// <param name="routePoint">An abbreviated representation of a
     /// Waypoint for denoting its position in a route
     /// </param>
     /// <returns></returns>
@@ -137,7 +137,7 @@ internal static class Mapper
     /// Composite key for selecting a Waypoint from the Waypoint table
     /// </summary>
     /// <remarks>This is an analog of WaypointIdKey which the schema states
-    /// "requires that the identifier, type, and country-codes 
+    /// "requires that the identifier, type, and country-codes
     /// values be unique in the waypoint table."
     /// </remarks>
     /// <param name="Identifier">3-5 character identifier of the waypoint </param>

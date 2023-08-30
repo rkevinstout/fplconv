@@ -1,4 +1,4 @@
-namespace fplconv.Tests;
+namespace FlightPlanConverter.Tests;
 
 /* The presence of XML causes VSCode's formatter
    to take leave of its senses.

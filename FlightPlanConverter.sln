@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7AFE6369-73F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{57AFE945-B2D5-4631-B8A9-4EBF059E89A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fplconv", "src\fplconv\fplconv.csproj", "{B63F6ADD-7A97-4959-8A98-A8A6F6BDE2D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightPlanConverter", "src\FlightPlanConverter\FlightPlanConverter.csproj", "{B63F6ADD-7A97-4959-8A98-A8A6F6BDE2D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fplconv.Tests", "tests\fplconv.Tests\fplconv.Tests.csproj", "{39FB4CB0-7781-4EE0-AF5E-28A6CA68A139}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightPlanConverter.Tests", "tests\FlightPlanConverter.Tests\FlightPlanConverter.Tests.csproj", "{39FB4CB0-7781-4EE0-AF5E-28A6CA68A139}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-namespace fplconv.XPlane;
+namespace FlightPlanConverter.XPlane;
 
 /// <summary>
 /// Represents the components of a flight plan as described

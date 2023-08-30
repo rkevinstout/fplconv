@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\fplconv\fplconv.csproj" />
+    <ProjectReference Include="..\..\src\FlightPlanConverter\FlightPlanConverter.csproj" />
   </ItemGroup>
 
 </Project>
