@@ -1,6 +1,5 @@
-using FluentAssertions;
-
 namespace fplconv.Tests;
+
 using static XPlane.FlightPlan.Waypoint;
 
 public class MapperTests
@@ -59,7 +58,7 @@ public class MapperTests
         {
             waypointidentifier = "KFOO",
             waypointtype = WaypointType_t.NDB,
-            waypointcountrycode = "K8"  // <- 
+            waypointcountrycode = "K8"  // <-
         }.ToWaypointTableKey();
 
         var result = waypointKey.Equals(routePointKey);

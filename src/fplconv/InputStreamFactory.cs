@@ -1,7 +1,7 @@
-﻿namespace fplconv;
+namespace fplconv;
 internal static class InputStreamFactory
 {
-    internal static Stream Create(Options options)        
+    internal static Stream Create(Options options)
     {
         if (!string.IsNullOrEmpty(options.InputFile))
         {
@@ -10,7 +10,7 @@ internal static class InputStreamFactory
 
         if (!Console.IsInputRedirected)
         {
-            throw new Exception("stdin has not been redirected");
+            throw new InvalidOperationException("stdin has not been redirected");
         }
 
         return Console.OpenStandardInput();

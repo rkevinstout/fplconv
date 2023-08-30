@@ -1,6 +1,6 @@
-﻿using System.Xml.Serialization;
-
 namespace fplconv;
+using System.Xml;
+using System.Xml.Serialization;
 
 internal static class Serializer
 {
@@ -8,9 +8,11 @@ internal static class Serializer
     {
         var serializer = new XmlSerializer(typeof(FlightPlan_t));
 
-        var obj = serializer.Deserialize(stream);
+        var reader = new XmlTextReader(stream);
 
-        var flightPlan =  obj as FlightPlan_t;
+        var obj = serializer.Deserialize(reader);
+
+        var flightPlan = obj as FlightPlan_t;
 
         return flightPlan ?? throw new InvalidOperationException("input could not be deserialized");
     }

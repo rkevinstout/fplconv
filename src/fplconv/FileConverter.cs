@@ -1,22 +1,21 @@
-﻿using fplconv.XPlane;
-
 namespace fplconv;
+using fplconv.XPlane;
 
-class FileConverter
+internal sealed class FileConverter
 {
-    private Func<Options, Stream> _inputStreamFactory;
-    private Func<FlightPlan, Options, TextWriter> _textWriterFactory;
+    private readonly Func<Options, Stream> _inputStreamFactory;
+    private readonly Func<FlightPlan, Options, TextWriter> _textWriterFactory;
 
-    public FileConverter(
+    internal FileConverter(
         Func<Options, Stream> inputStreamFactory,
         Func<FlightPlan, Options, TextWriter> textWriterFactory
         )
     {
         _inputStreamFactory = inputStreamFactory;
-        _textWriterFactory = textWriterFactory;        
+        _textWriterFactory = textWriterFactory;
     }
-    
-    public void Convert(Options options)
+
+    internal void Convert(Options options)
     {
         var input = ReadInput(options);
 
@@ -29,14 +28,14 @@ class FileConverter
     {
         using var stream = GetStream(options);
 
-        var flightPlan  = Serializer.Deserialize(stream);
+        var flightPlan = Serializer.Deserialize(stream);
 
         return flightPlan ?? throw new InvalidOperationException("input could not be deserialized");
     }
 
     private void WriteOutput(FlightPlan flightPlan, Options options)
     {
-        using TextWriter textWriter = CreateTextWriter(flightPlan, options);
+        using var textWriter = CreateTextWriter(flightPlan, options);
 
         var text = flightPlan.Format(options);
 
@@ -44,9 +43,9 @@ class FileConverter
         textWriter.Flush();
     }
 
-    private TextWriter CreateTextWriter(FlightPlan flightPlan, Options options) 
+    private TextWriter CreateTextWriter(FlightPlan flightPlan, Options options)
         => _textWriterFactory.Invoke(flightPlan, options);
 
-    private Stream GetStream(Options options) 
+    private Stream GetStream(Options options)
         => _inputStreamFactory.Invoke(options);
 }

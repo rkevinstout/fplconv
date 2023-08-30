@@ -1,9 +1,7 @@
-﻿using System.Text;
-
 namespace fplconv.Tests;
 
 /* The presence of XML causes VSCode's formatter
-   to take leave of its senses.  
+   to take leave of its senses.
 
    I don't like it either
 */
@@ -12,7 +10,7 @@ public static class TestData
 {
     public static Stream CreateStream(string input)
     {
-        byte[] bytes = Encoding.UTF8.GetBytes(input);
+        var bytes = System.Text.Encoding.UTF8.GetBytes(input);
         var ms = new MemoryStream(bytes);
 
         return ms;
@@ -21,7 +19,7 @@ public static class TestData
     public static FlightPlan_t CreateGarminFlightPlan()
     {
         var fp = new FlightPlan_t
-        {            
+        {
             route = new Route_t
             {
                 routename = "KCUB KRDU",
