@@ -1,6 +1,6 @@
 namespace FlightPlanConverter.XPlane;
-using System.Text;
 
+using System.Text;
 using static FlightPlan.Waypoint;
 
 internal static class Formatter
@@ -11,7 +11,7 @@ internal static class Formatter
     /// <param name="flightPlan"></param>
     /// <param name="options"></param>
     /// <returns></returns>
-    /// <see cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
+    /// <see href="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
     internal static string Format(this FlightPlan flightPlan, Options options)
     {
 #pragma warning disable CA1305
@@ -86,7 +86,7 @@ internal static class Formatter
         // random route leg to the waypoint, or the name of an airway or
         // ATS route to the waypoint.
 
-        if (input.Via == LegType.Airway && input.Airway is not null)
+        if (input is { Via: LegType.Airway, Airway: not null })
         {
             return input.Airway;
         }

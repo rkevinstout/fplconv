@@ -1,7 +1,7 @@
 namespace FlightPlanConverter;
 
 using System.Text;
-using FlightPlanConverter.XPlane;
+using XPlane;
 
 internal static class TextWriterFactory
 {

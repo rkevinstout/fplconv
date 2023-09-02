@@ -4,7 +4,7 @@ namespace FlightPlanConverter.XPlane;
 /// Represents the components of a flight plan as described
 /// in the x-plane documentation
 /// </summary>
-/// <see cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
+/// <see href="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
 internal sealed class FlightPlan
 {
     internal FlightPlan(string name, Waypoint[] waypoints)
@@ -23,7 +23,7 @@ internal sealed class FlightPlan
 
     internal sealed class DepartureBlock : TerminalBlock
     {
-        public Procedure Procedure { get; set; } = new();
+        public Procedure Procedure { get; } = new();
 
         internal DepartureBlock(Waypoint waypoint) : base(waypoint)
         { }
@@ -31,9 +31,9 @@ internal sealed class FlightPlan
 
     internal sealed class DestinationBlock : TerminalBlock
     {
-        public Procedure Arrival { get; set; } = new();
+        public Procedure Arrival { get; } = new();
 
-        public Procedure Approach { get; set; } = new();
+        public Procedure Approach { get; } = new();
 
         internal DestinationBlock(Waypoint waypoint) : base(waypoint)
         { }

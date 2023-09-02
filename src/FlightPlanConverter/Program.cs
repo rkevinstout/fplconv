@@ -1,12 +1,9 @@
 using CommandLine;
 using FlightPlanConverter;
 
-
-var exitCode = 0;
-
 var result = Parser.Default.ParseArguments<Options>(args);
 
-exitCode += result.MapResult(Run, _ => 1);
+var exitCode = result.MapResult(Run, _ => 1);
 
 return exitCode;
 
@@ -23,7 +20,7 @@ static int Run(Options options)
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Error: {ex.Message}");
+        Console.WriteLine($@"Error: {ex.Message}");
         return 1;
     }
     return 0;

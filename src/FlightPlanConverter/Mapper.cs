@@ -7,12 +7,12 @@ using static XPlane.FlightPlan.Waypoint;
 internal static class Mapper
 {
     /// <summary>
-    /// Maps a flight plan from Garmin's format to XPlane
+    /// Maps a flight plan from Garmin format to XPlane
     /// </summary>
     /// <param name="input">a serialized Garmin flight plan</param>
     /// <returns>an XPlane.FlightPlan</returns>
-    /// <seealso cref="https://www8.garmin.com/xmlschemas/FlightPlanv1.xsd"/>
-    /// <seealso cref="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
+    /// <seealso href="https://www8.garmin.com/xmlschemas/FlightPlanv1.xsd"/>
+    /// <seealso href="https://developer.x-plane.com/article/flightplan-files-v11-fms-file-format/"/>
     internal static FlightPlan Map(this FlightPlan_t input)
     {
         var route = MapRoute(input.waypointtable, input.route.routepoint)
@@ -25,18 +25,18 @@ internal static class Mapper
 
     private static IEnumerable<Waypoint> MapRoute(
         Waypoint_t[] waypoints,
-        RoutePoint_t[] routePoints
+        IReadOnlyList<RoutePoint_t> routePoints
         )
     {
         var dictionary = waypoints.ToDictionary();
 
-        for (var i = 0; i < routePoints.Length; i++)
+        for (var i = 0; i < routePoints.Count; i++)
         {
             var routePoint = routePoints[i];
 
             var key = routePoint.ToWaypointTableKey();
 
-            // we need the copy from the waypomt table
+            // we need the copy from the waypoint table
             // to get the lat/lon coordinates
             var waypoint = dictionary[key].ToWaypoint();
 
@@ -45,7 +45,7 @@ internal static class Mapper
                 if (i == 0)
                     waypoint.Via = LegType.DepartureAirport;
 
-                if (i == routePoints.Length - 1)
+                if (i == routePoints.Count - 1)
                     waypoint.Via = LegType.DestinationAirport;
             }
 
@@ -90,7 +90,7 @@ internal static class Mapper
     /// <param name="waypoints">an unordered list of unique
     /// waypoints referenced by a flight plan</param>
     /// <returns>a map of WaypointTableKey->Waypoint</returns>
-    /// <seealso cref="https://www8.garmin.com/xmlschemas/FlightPlanv1.xsd"/>
+    /// <seealso href="https://www8.garmin.com/xmlschemas/FlightPlanv1.xsd"/>
     private static IDictionary<WaypointTableKey, Waypoint_t> ToDictionary(this Waypoint_t[] waypoints)
     {
         var dictionary = new Dictionary<WaypointTableKey, Waypoint_t>();
@@ -113,7 +113,7 @@ internal static class Mapper
     /// Constructs a key from data in a <paramref name="wayPoint"/>
     /// </summary>
     /// <param name="wayPoint"></param>
-    /// <returns></returns>
+    /// <returns cref="WaypointTableKey"/>
     internal static WaypointTableKey ToWaypointTableKey(this Waypoint_t wayPoint) => new(
         wayPoint.identifier,
         wayPoint.type,
@@ -126,7 +126,7 @@ internal static class Mapper
     /// <param name="routePoint">An abbreviated representation of a
     /// Waypoint for denoting its position in a route
     /// </param>
-    /// <returns></returns>
+    /// <returns cref="WaypointTableKey"/>
     internal static WaypointTableKey ToWaypointTableKey(this RoutePoint_t routePoint) => new(
         routePoint.waypointidentifier,
         routePoint.waypointtype,
@@ -147,6 +147,5 @@ internal static class Mapper
         string Identifier,
         WaypointType_t WaypointType,
         string CountryCode
-        )
-    { }
+        );
 }

@@ -1,4 +1,5 @@
 namespace FlightPlanConverter;
+
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -8,7 +9,7 @@ internal static class Serializer
     {
         var serializer = new XmlSerializer(typeof(FlightPlan_t));
 
-        var reader = new XmlTextReader(stream);
+        using var reader = new XmlTextReader(stream);
 
         var obj = serializer.Deserialize(reader);
 

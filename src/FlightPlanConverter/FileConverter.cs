@@ -1,5 +1,6 @@
 namespace FlightPlanConverter;
-using FlightPlanConverter.XPlane;
+
+using XPlane;
 
 internal sealed class FileConverter
 {

@@ -45,7 +45,7 @@ public class MapperTests
     }
 
     [Fact]
-    public void DifferentPointsProduceDiferentKeys()
+    public void DifferentPointsProduceDifferentKeys()
     {
         var waypointKey = new Waypoint_t
         {

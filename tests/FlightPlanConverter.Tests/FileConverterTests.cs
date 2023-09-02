@@ -7,8 +7,8 @@ public class FileConverterTests
         using var textWriter = new StringWriter();
 
         var converter = new FileConverter(
-            (options) => TestData.CreateStream(input),
-            (fp, options) => textWriter
+            (_) => TestData.CreateStream(input),
+            (_, _) => textWriter
         );
 
         converter.Convert(options);
@@ -17,7 +17,7 @@ public class FileConverterTests
     }
 
     [Fact]
-    public void CanConvert_File()
+    public void CanConvertFile()
     {
         var options = new Options { AiracCycle = "2112" };
 
